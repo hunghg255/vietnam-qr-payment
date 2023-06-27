@@ -804,6 +804,7 @@ export const BanksOptions = Banks.map((bank) => {
   return {
     label: bank.name,
     value: bank.value,
+    shortName: bank.shortName,
     bin: bank.bin,
     icon: `/images/${bank.key}-icon.png`,
   };
@@ -839,3 +840,6 @@ export const normalizeNumber = (value = '', prevValue = '', max?: any, maxLength
     return value;
   }
 };
+
+const config = { style: 'currency', currency: 'VND' };
+export const formatedCurrency = new Intl.NumberFormat('vi-VN', config);

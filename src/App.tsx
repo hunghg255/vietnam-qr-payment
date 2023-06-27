@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import * as htmlToImage from 'html-to-image';
 import html2canvas from 'html2canvas';
@@ -7,18 +7,18 @@ import Select from 'rc-select';
 import { QRCode } from 'react-qrcode-logo';
 import { genCodeVietQr } from 'vn-qr-pay';
 
-import { BanksOptions, normalizeNumber } from '@/utils';
+import { BanksOptions, formatedCurrency, normalizeNumber } from '@/utils';
 import './App.css';
 
 function App() {
   const [form] = Form.useForm();
-  const ref = useRef<any>(null);
   const [qrValue, setQrValue] = useState(
     '00020101021238540010A00000072701240006970407011078682551970208QRIBFTTA5303704540410005802VN62280824Give Hung a cup of coffe6304BF2C',
   );
   const [logo, setLogo] = useState('https://cdn.jsdelivr.net/gh/hunghg255/static/logo-h.png');
   const bankSelected = Form.useWatch(['bank'], form);
   const account = Form.useWatch(['account'], form);
+  const amount = Form.useWatch(['amount'], form);
 
   const bankInfo = BanksOptions?.find((item) => item?.value === bankSelected);
 
@@ -49,10 +49,6 @@ function App() {
   };
 
   const onDownload = useCallback(() => {
-    if (ref.current === null) {
-      return;
-    }
-
     // @ts-expect-error
     html2canvas(document.querySelector('#qrCode')).then(function (canvas) {
       const rEle = document.querySelector('.result');
@@ -65,7 +61,7 @@ function App() {
         .toPng(rEle.querySelector('canvas'), { cacheBust: true })
         .then((dataUrl) => {
           const link = document.createElement('a');
-          link.download = 'demo.png';
+          link.download = 'qr-payment.png';
           link.href = dataUrl;
           link.click();
           setTimeout(() => {
@@ -77,28 +73,35 @@ function App() {
           console.log(error);
         });
     });
-  }, [ref]);
+  }, []);
 
   return (
     <div className='App'>
       <div className='qrCode' id='qrCode'>
-        <QRCode
-          ref={ref}
-          value={qrValue}
-          logoImage={logo}
-          size={350}
-          fgColor='white'
-          bgColor='black'
-          qrStyle='dots'
-          logoWidth={50}
-          logoHeight={50}
-          logoPadding={10}
-          logoPaddingStyle='circle'
-          removeQrCodeBehindLogo={true}
-          enableCORS={true}
-        />
-        {account && <p>Tài khoản: {account}</p>}
-        {bankInfo?.label && <p>{bankInfo?.label}</p>}
+        <div className='qrBorder'>
+          <QRCode
+            value={qrValue}
+            logoImage={logo}
+            size={240}
+            fgColor='white'
+            bgColor='black'
+            qrStyle='dots'
+            logoWidth={50}
+            logoHeight={50}
+            logoPadding={10}
+            logoPaddingStyle='circle'
+            removeQrCodeBehindLogo={true}
+            enableCORS={true}
+          />
+        </div>
+        {bankInfo?.label && (
+          <p className='bankInfoLabel'>
+            <img src={bankInfo?.icon} alt='' />
+            <span>{bankInfo?.shortName}</span>
+          </p>
+        )}
+        {account && <p>STK: {account}</p>}
+        {amount && <p>Số tiền: {formatedCurrency.format(amount)}</p>}
       </div>
 
       <button onClick={onDownload}>Download</button>
@@ -108,7 +111,7 @@ function App() {
       <div className='wrap'>
         <Form onFieldsChange={onFieldsChange} form={form}>
           <div className='mb-24'>
-            <label htmlFor=''>Chọn logo</label>
+            <label htmlFor=''>Logo</label>
             <input
               type='file'
               className='input-text'
@@ -151,7 +154,7 @@ function App() {
           </div>
 
           <div className='mb-24'>
-            <label htmlFor=''>Tin nhắn</label>
+            <label htmlFor=''>Lời nhắn</label>
 
             <Field name={'message'}>
               <input className='input-text' />

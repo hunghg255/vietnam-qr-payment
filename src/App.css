@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 10px;
   text-align: center;
 }
 
@@ -53,14 +53,24 @@ label {
 
 .qrCode {
   text-align: center;
-  max-width: 500px;
+  max-width: 360px;
   margin: 0 auto;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.qrBorder {
+  border: 1px solid black;
+  padding: 10px 10px 5px 10px;
 }
 
 .qrCode p {
   font-weight: 600;
-  margin: 10px 0 0;
+  margin: 5px 0 0;
 }
 
 .result.active {
@@ -71,9 +81,26 @@ button {
   border: none;
   padding: 10px 14px;
   border-radius: 6px;
-  background-color: rgb(215, 215, 215);
+  background-color: rgba(215, 215, 215, 0.85);
   color: black;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 30px 40px rgb(0, 0, 0, 0.05);
+  transition: all 300ms ease-in-out;
+}
+
+button:hover {
+  background-color: rgba(215, 215, 215);
+  transform: translateY(-1px);
+}
+
+.bankInfoLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.bankInfoLabel img {
+  max-height: 40px;
 }

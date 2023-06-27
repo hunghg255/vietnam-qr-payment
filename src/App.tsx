@@ -24,12 +24,13 @@ function App() {
 
   const onFieldsChange = () => {
     const values = form.getFieldsValue();
+    console.log({ values });
 
-    if (values?.bank && values?.account && values?.amount) {
+    if (values?.bank && values?.account) {
       const qrValue = genCodeVietQr({
         bank: values.bank,
         account: values.account,
-        amount: values.amount,
+        amount: values?.amount || 0,
         message: values.message,
       });
 

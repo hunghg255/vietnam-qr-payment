@@ -66,6 +66,23 @@ label {
 .qrBorder {
   border: 1px solid black;
   padding: 10px 10px 5px 10px;
+  position: relative;
+}
+
+.qrBorder canvas {
+  position: relative;
+  z-index: 1;
+}
+
+.imgBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.4;
 }
 
 .qrCode p {

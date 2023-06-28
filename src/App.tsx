@@ -16,6 +16,7 @@ function App() {
     '00020101021238540010A00000072701240006970407011078682551970208QRIBFTTA5303704540410005802VN62280824Give Hung a cup of coffe6304BF2C',
   );
   const [logo, setLogo] = useState('https://cdn.jsdelivr.net/gh/hunghg255/static/logo-h.png');
+  const [bg, setBg] = useState('');
   const bankSelected = Form.useWatch(['bank'], form);
   const account = Form.useWatch(['account'], form);
   const amount = Form.useWatch(['amount'], form);
@@ -45,6 +46,17 @@ function App() {
     // eslint-disable-next-line unicorn/prefer-add-event-listener
     reader.onload = () => {
       setLogo(reader.result as string);
+    };
+  };
+
+  const onChangeBg = (e: any) => {
+    const file = e.target.files[0];
+    // convert file to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    // eslint-disable-next-line unicorn/prefer-add-event-listener
+    reader.onload = () => {
+      setBg(reader.result as string);
     };
   };
 
@@ -83,8 +95,8 @@ function App() {
             value={qrValue}
             logoImage={logo}
             size={240}
-            fgColor='white'
-            bgColor='black'
+            fgColor={bg ? 'black' : 'white'}
+            bgColor={bg ? 'transparent' : 'black'}
             qrStyle='dots'
             logoWidth={50}
             logoHeight={50}
@@ -93,6 +105,8 @@ function App() {
             removeQrCodeBehindLogo={true}
             enableCORS={true}
           />
+
+          {bg && <img src={bg} alt='' className='imgBg' />}
         </div>
         {bankInfo?.label && (
           <p className='bankInfoLabel'>
@@ -110,16 +124,6 @@ function App() {
 
       <div className='wrap'>
         <Form onFieldsChange={onFieldsChange} form={form}>
-          <div className='mb-24'>
-            <label htmlFor=''>Logo</label>
-            <input
-              type='file'
-              className='input-text'
-              onChange={onChangeLogo}
-              accept='.png, .jpeg, .jpg'
-            />
-          </div>
-
           <div className='mb-24'>
             <label htmlFor=''>Ngân hàng</label>
             <Field name={'bank'}>
@@ -159,6 +163,26 @@ function App() {
             <Field name={'message'}>
               <input className='input-text' placeholder='Lời nhắn' />
             </Field>
+          </div>
+
+          <div className='mb-24'>
+            <label htmlFor=''>Logo</label>
+            <input
+              type='file'
+              className='input-text'
+              onChange={onChangeLogo}
+              accept='.png, .jpeg, .jpg'
+            />
+          </div>
+
+          <div className='mb-24'>
+            <label htmlFor=''>Background</label>
+            <input
+              type='file'
+              className='input-text'
+              onChange={onChangeBg}
+              accept='.png, .jpeg, .jpg'
+            />
           </div>
         </Form>
       </div>

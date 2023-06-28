@@ -141,7 +141,7 @@ function App() {
           <div className='mb-24'>
             <label htmlFor=''>Số tài khoản</label>
             <Field name={'account'} normalize={normalizeNumber}>
-              <input type='tel' className='input-text' />
+              <input type='tel' className='input-text' placeholder='Số tài khoản' />
             </Field>
           </div>
 
@@ -149,7 +149,7 @@ function App() {
             <label htmlFor=''>Số tiền</label>
 
             <Field name={'amount'} normalize={normalizeNumber}>
-              <input type='tel' className='input-text' />
+              <input type='tel' className='input-text' placeholder='Số tiền' />
             </Field>
           </div>
 
@@ -157,7 +157,7 @@ function App() {
             <label htmlFor=''>Lời nhắn</label>
 
             <Field name={'message'}>
-              <input className='input-text' />
+              <input className='input-text' placeholder='Lời nhắn' />
             </Field>
           </div>
         </Form>

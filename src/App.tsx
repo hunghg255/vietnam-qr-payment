@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import { useCallback, useState } from 'react';
 
 import * as htmlToImage from 'html-to-image';
@@ -20,11 +21,17 @@ function App() {
   const bankSelected = Form.useWatch(['bank'], form);
   const account = Form.useWatch(['account'], form);
   const amount = Form.useWatch(['amount'], form);
+  const qr_type = Form.useWatch(['qr_type'], form);
 
   const bankInfo = BanksOptions?.find((item) => item?.value === bankSelected);
 
   const onFieldsChange = () => {
     const values = form.getFieldsValue();
+
+    if (values?.qr_type === 1 && values?.url) {
+      setQrValue(values?.url);
+      return;
+    }
 
     if (values?.bank && values?.account) {
       const qrValue = genCodeVietQr({
@@ -123,47 +130,81 @@ function App() {
       <br />
 
       <div className='wrap'>
-        <Form onFieldsChange={onFieldsChange} form={form}>
+        <Form
+          onFieldsChange={onFieldsChange}
+          form={form}
+          initialValues={{
+            qr_type: 0,
+          }}
+        >
           <div className='mb-24'>
-            <label htmlFor=''>Ngân hàng</label>
-            <Field name={'bank'}>
-              <Select className='select' placeholder='Chọn ngân hàng' showSearch>
-                {BanksOptions.map((item, index) => {
-                  return (
-                    <Select.Option key={index} value={item.value}>
-                      <div className='bankItem'>
-                        <img src={item.icon} alt='' />
-                        <span>{item.label}</span>
-                      </div>
-                    </Select.Option>
-                  );
-                })}
-              </Select>
+            <label htmlFor=''>Kiểu QR </label>
+            <Field name={'qr_type'}>
+              <Select
+                className='select'
+                placeholder='Loại QR'
+                options={[
+                  { value: 0, label: 'Ngân hàng' },
+                  { value: 1, label: 'URL' },
+                ]}
+              />
             </Field>
           </div>
 
-          <div className='mb-24'>
-            <label htmlFor=''>Số tài khoản</label>
-            <Field name={'account'} normalize={normalizeNumber}>
-              <input type='tel' className='input-text' placeholder='Số tài khoản' />
-            </Field>
-          </div>
+          {qr_type === 1 ? (
+            <>
+              <div className='mb-24'>
+                <label htmlFor=''>URL</label>
 
-          <div className='mb-24'>
-            <label htmlFor=''>Số tiền</label>
+                <Field name={'url'}>
+                  <input className='input-text' placeholder='URL' />
+                </Field>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className='mb-24'>
+                <label htmlFor=''>Ngân hàng</label>
+                <Field name={'bank'}>
+                  <Select className='select' placeholder='Chọn ngân hàng' showSearch>
+                    {BanksOptions.map((item, index) => {
+                      return (
+                        <Select.Option key={index} value={item.value}>
+                          <div className='bankItem'>
+                            <img src={item.icon} alt='' />
+                            <span>{item.label}</span>
+                          </div>
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
+                </Field>
+              </div>
 
-            <Field name={'amount'} normalize={normalizeNumber}>
-              <input type='tel' className='input-text' placeholder='Số tiền' />
-            </Field>
-          </div>
+              <div className='mb-24'>
+                <label htmlFor=''>Số tài khoản</label>
+                <Field name={'account'} normalize={normalizeNumber}>
+                  <input type='tel' className='input-text' placeholder='Số tài khoản' />
+                </Field>
+              </div>
 
-          <div className='mb-24'>
-            <label htmlFor=''>Lời nhắn</label>
+              <div className='mb-24'>
+                <label htmlFor=''>Số tiền</label>
 
-            <Field name={'message'}>
-              <input className='input-text' placeholder='Lời nhắn' />
-            </Field>
-          </div>
+                <Field name={'amount'} normalize={normalizeNumber}>
+                  <input type='tel' className='input-text' placeholder='Số tiền' />
+                </Field>
+              </div>
+
+              <div className='mb-24'>
+                <label htmlFor=''>Lời nhắn</label>
+
+                <Field name={'message'}>
+                  <input className='input-text' placeholder='Lời nhắn' />
+                </Field>
+              </div>
+            </>
+          )}
 
           <div className='mb-24'>
             <label htmlFor=''>Logo</label>

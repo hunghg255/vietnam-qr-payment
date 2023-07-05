@@ -15,8 +15,9 @@
   width: 100%;
 }
 
-.rc-select-selection-placeholder {
-  text-align: left;
+.rc-select-selection-placeholder,
+.rc-select-selection-item {
+  text-align: left !important;
 }
 
 .bankItem {

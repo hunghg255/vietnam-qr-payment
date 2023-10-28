@@ -1,7 +1,7 @@
 /* eslint-disable multiline-ternary */
 import { useCallback, useState } from 'react';
 
-import { toPng } from 'dom-to-image-retina';
+import { toPng } from 'dom-to-images';
 import Form, { Field } from 'rc-field-form';
 import Select from 'rc-select';
 import { QRCode } from 'react-qrcode-logo';

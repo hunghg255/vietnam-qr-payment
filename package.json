@@ -14,8 +14,7 @@
     "analyze": "npm run lint && tsc && vite build --mode=analyze && source-map-explorer 'dist/assets/*.js'"
   },
   "dependencies": {
-    "html-to-image": "^1.11.11",
-    "html2canvas": "^1.4.1",
+    "dom-to-image-retina": "^1.0.2",
     "rc-field-form": "^1.33.0",
     "rc-select": "^14.5.2",
     "react": "^18.2.0",

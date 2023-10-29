@@ -1,5 +1,5 @@
 /* eslint-disable multiline-ternary */
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { toPng } from 'dom-to-images';
 import Form, { Field } from 'rc-field-form';
@@ -9,6 +9,7 @@ import { genCodeVietQr } from 'vn-qr-pay';
 
 import { BanksOptions, formatedCurrency, normalizeNumber } from '@/utils';
 import './App.css';
+import { compress, decompress } from '@/utils/lama';
 
 function App() {
   const [form] = Form.useForm();
@@ -23,6 +24,29 @@ function App() {
   const qr_type = Form.useWatch(['qr_type'], form);
 
   const bankInfo = BanksOptions?.find((item) => item?.value === bankSelected);
+
+  useEffect(() => {
+    const data = window.location.hash.replace('#', '');
+    if (data) {
+      decompress(data, (decompressed: any) => {
+        const d: any = JSON.parse(decompressed);
+        if (d?.allValues) {
+          form.setFields(
+            Object.keys(d?.allValues).map((key) => ({ name: key, value: d?.allValues[key] })),
+          );
+        }
+        if (d?.qrValue) {
+          setQrValue(d?.qrValue);
+        }
+        if (d?.bg) {
+          setBg(d?.bg);
+        }
+        if (d?.logo) {
+          setLogo(d?.logo);
+        }
+      });
+    }
+  }, []);
 
   const onFieldsChange = () => {
     const values = form.getFieldsValue();
@@ -76,6 +100,22 @@ function App() {
     })();
   }, []);
 
+  const onCopyLink = async () => {
+    const allValues = form.getFieldsValue();
+
+    compress(
+      JSON.stringify({
+        qrValue,
+        logo,
+        bg,
+        allValues,
+      }),
+      (compressed: any) => {
+        navigator.clipboard.writeText(`${window.location.origin}/#${compressed}`);
+      },
+    );
+  };
+
   return (
     <div className='App'>
       <div className='qrCode' id='qrCode'>
@@ -108,6 +148,14 @@ function App() {
       </div>
 
       <button onClick={onDownload}>Download</button>
+      <button
+        onClick={onCopyLink}
+        style={{
+          marginLeft: '20px',
+        }}
+      >
+        Copy Link
+      </button>
       <br />
       <br />
 

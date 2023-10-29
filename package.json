@@ -20,7 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qrcode-logo": "^2.9.0",
-    "vn-qr-pay": "^0.0.3"
+    "vn-qr-pay": "^0.0.5"
   },
   "devDependencies": {
     "@hunghg255/eslint-config-react": "^0.0.16",

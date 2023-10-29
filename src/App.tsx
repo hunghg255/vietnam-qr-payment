@@ -5,11 +5,12 @@ import { toPng } from 'dom-to-images';
 import Form, { Field } from 'rc-field-form';
 import Select from 'rc-select';
 import { QRCode } from 'react-qrcode-logo';
-import { genCodeVietQr } from 'vn-qr-pay';
+import { encodeVietQr } from 'vn-qr-pay';
 
 import { BanksOptions, formatedCurrency, normalizeNumber } from '@/utils';
-import './App.css';
 import { compress, decompress } from '@/utils/lama';
+
+import './App.css';
 
 function App() {
   const [form] = Form.useForm();
@@ -57,11 +58,13 @@ function App() {
     }
 
     if (values?.bank && values?.account) {
-      const qrValue = genCodeVietQr({
+      const qrValue = encodeVietQr({
         bank: values.bank,
         account: values.account,
         amount: values?.amount ?? '0',
-        message: values.message,
+        additionalData: {
+          purpose: values.message,
+        },
       });
 
       setQrValue(qrValue);

@@ -13,6 +13,7 @@ concurrency:
 jobs:
   preview:
     runs-on: ubuntu-latest
+    id: deploy
     permissions:
       pull-requests: write # allow surge-preview to create/update PR comments
     steps:
@@ -20,6 +21,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
+
       - name: Notification Failure
         if: failure()
         uses: hunghg255/action-notifications@master

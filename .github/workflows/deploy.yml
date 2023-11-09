@@ -20,14 +20,25 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - uses: hunghg255/surge-preview@master
-        id: preview_step
+      - name: Notification Failure
+        if: failure()
+        uses: hunghg255/action-notifications@master
         with:
-          surge_token: ${{ secrets.SURGE_TOKEN }}
-          dist: dist
-          preview_branch: true
-          build: |
-            npm install
-            npm run build
-      - name: Get the preview_url
-        run: echo "url => ${{ steps.preview_step.outputs.preview_url }}"
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          qrcode: https://hung.thedev.id
+          title: "Deploy to Dev"
+          description: "Test here: https://hung.thedev.id"
+
+  notifification:
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Notification Success
+        uses: hunghg255/action-notifications@master
+        if: always()
+        with:
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Deploy to Dev"
+          qrcode: https://hung.thedev.id
+          description: "Test here: https://hung.thedev.id"

@@ -13,7 +13,6 @@ concurrency:
 jobs:
   preview:
     runs-on: ubuntu-latest
-    id: deploy
     permissions:
       pull-requests: write # allow surge-preview to create/update PR comments
     steps:
@@ -32,7 +31,7 @@ jobs:
           description: "Test here: https://hung.thedev.id"
 
   notifification:
-    needs: deploy
+    needs: preview
     runs-on: ubuntu-latest
 
     steps:

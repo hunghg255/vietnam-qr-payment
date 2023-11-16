@@ -24,7 +24,7 @@ jobs:
         id: preview_step
         with:
           surge_token: ${{ secrets.SURGE_TOKEN }}
-          dist: public
+          dist: dist
           build: |
             npm install
             npm run build

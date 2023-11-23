@@ -1,8 +1,7 @@
 /* eslint-disable multiline-ternary */
 import { useCallback, useEffect, useState } from 'react';
 
-import * as htmlToImage from 'html-to-image';
-import html2canvas from 'html2canvas';
+import { toPng } from 'dom-to-images';
 import Form, { Field } from 'rc-field-form';
 import Select from 'rc-select';
 import { QRCode } from 'react-qrcode-logo';
@@ -95,31 +94,12 @@ function App() {
     };
   };
 
-  const onDownload = useCallback(() => {
-    // @ts-expect-error
-    html2canvas(document.querySelector('#qrCode')).then(function (canvas) {
-      const rEle = document.querySelector('.result');
-      rEle?.classList.add('active');
-      // @ts-expect-error
-      rEle.append(canvas); // if you want see your screenshot in body.
-
-      htmlToImage
-        // @ts-expect-error
-        .toPng(rEle.querySelector('canvas'), { cacheBust: true })
-        .then((dataUrl) => {
-          const link = document.createElement('a');
-          link.download = 'qr-payment.png';
-          link.href = dataUrl;
-          link.click();
-          setTimeout(() => {
-            rEle?.classList.remove('active');
-            canvas.remove();
-          }, 50);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+  const onDownload = useCallback(async () => {
+    const url = await toPng(document.querySelector('#qrCode') as HTMLElement);
+    const link = document.createElement('a');
+    link.download = 'qr-payment.png';
+    link.href = url;
+    link.click();
   }, []);
 
   const onCopyLink = async () => {

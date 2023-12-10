@@ -20,6 +20,7 @@ function App() {
   const [logo, setLogo] = useState('https://cdn.jsdelivr.net/gh/hunghg255/static/logo-h.png');
   const [bg, setBg] = useState('');
   const bankSelected = Form.useWatch(['bank'], form);
+  const name = Form.useWatch(['name'], form);
   const account = Form.useWatch(['account'], form);
   const amount = Form.useWatch(['amount'], form);
   const qr_type = Form.useWatch(['qr_type'], form);
@@ -145,6 +146,7 @@ function App() {
             <span>{bankInfo?.shortName}</span>
           </p>
         )}
+        {name && <p>{name}</p>}
         {account && <p>STK: {account}</p>}
         {amount && <p>Số tiền: {formatedCurrency.format(amount)}</p>}
         {message && <p>Lời nhắn: {message}</p>}
@@ -211,6 +213,13 @@ function App() {
                       );
                     })}
                   </Select>
+                </Field>
+              </div>
+
+              <div className='mb-24'>
+                <label htmlFor=''>Tên tài khoản</label>
+                <Field name={'name'}>
+                  <input type='text' className='input-text' placeholder='Tên tài khoản' />
                 </Field>
               </div>
 

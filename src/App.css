@@ -1,3 +1,14 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -36,7 +47,7 @@
 
 .input-text {
   background-color: #fff;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #d9d9d94f;
   transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   height: 32px;
   padding: 0 11px;
@@ -55,19 +66,22 @@ label {
 .qrCode {
   text-align: center;
   max-width: 360px;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
 }
 
 .qrBorder {
-  border: 1px solid black;
+  border: 1px solid rgb(133, 133, 133);
   padding: 10px 10px 5px 10px;
   position: relative;
+  border-radius: 6px;
 }
 
 .qrBorder canvas {
@@ -87,8 +101,7 @@ label {
 }
 
 .qrCode p {
-  font-weight: 600;
-  margin: 5px 0 0;
+  margin: 0;
 }
 
 .result.active {
@@ -103,7 +116,6 @@ button {
   color: black;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 30px 40px rgb(0, 0, 0, 0.05);
   transition: all 300ms ease-in-out;
 }
 
@@ -112,13 +124,65 @@ button:hover {
   transform: translateY(-1px);
 }
 
-.bankInfoLabel {
+.bankInfoWrap {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 16px;
+  margin: 10px 0 0;
+  width: 86%;
 }
 
-.bankInfoLabel img {
+@media (max-width: 576px) {
+  .bankInfoWrap {
+    width: 100%;
+  }
+}
+
+.bankInfo {
+  flex: 1;
+}
+
+.bankImgWrap p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 9px;
+}
+
+.bankImg {
+  max-width: 40px;
   max-height: 40px;
+  display: block;
+  border-radius: 50%;
+  border: 1px solid #d9d9d9;
+  margin: auto;
+}
+
+.userName,
+.accountNumber,
+.money,
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+  line-height: 1;
+  margin: 0 0 8px !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.accountNumber {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.money {
+}
+
+.userName img,
+.accountNumber img,
+.money img,
+.note img {
+  max-width: 14px;
+  max-height: 14px;
+  transform: translateY(1px);
 }

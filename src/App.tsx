@@ -1,3 +1,4 @@
+/* eslint-disable require-await */
 /* eslint-disable multiline-ternary */
 import { useCallback, useEffect, useState } from 'react';
 
@@ -140,16 +141,64 @@ function App() {
 
           {bg && <img src={bg} alt='' className='imgBg' />}
         </div>
-        {bankInfo?.label && (
-          <p className='bankInfoLabel'>
-            <img src={bankInfo?.icon} alt='' />
-            <span>{bankInfo?.shortName}</span>
-          </p>
-        )}
-        {name && <p>{name}</p>}
+
+        <div className='bankInfoWrap'>
+          <div className='bankImgWrap'>
+            {bankInfo?.label && (
+              <>
+                <img className='bankImg' src={bankInfo?.icon} alt='' />
+                <p>{bankInfo?.shortName}</p>
+              </>
+            )}
+          </div>
+
+          <div className='bankInfo'>
+            {name && (
+              <p className='userName'>
+                <img
+                  src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTEyIDExcS44MjUgMCAxLjQxMy0uNTg4UTE0IDkuODI1IDE0IDl0LS41ODctMS40MTNRMTIuODI1IDcgMTIgN3EtLjgyNSAwLTEuNDEyLjU4N1ExMCA4LjE3NSAxMCA5cTAgLjgyNS41ODggMS40MTJRMTEuMTc1IDExIDEyIDExWm0wIDJxLTEuNjUgMC0yLjgyNS0xLjE3NVE4IDEwLjY1IDggOXEwLTEuNjUgMS4xNzUtMi44MjVRMTAuMzUgNSAxMiA1cTEuNjUgMCAyLjgyNSAxLjE3NVExNiA3LjM1IDE2IDlxMCAxLjY1LTEuMTc1IDIuODI1UTEzLjY1IDEzIDEyIDEzWm0wIDExcS0yLjQ3NSAwLTQuNjYyLS45MzhxLTIuMTg4LS45MzctMy44MjUtMi41NzRRMS44NzUgMTguODUuOTM4IDE2LjY2M1EwIDE0LjQ3NSAwIDEydC45MzgtNC42NjNxLjkzNy0yLjE4NyAyLjU3NS0zLjgyNVE1LjE1IDEuODc1IDcuMzM4LjkzOFE5LjUyNSAwIDEyIDB0NC42NjMuOTM4cTIuMTg3LjkzNyAzLjgyNSAyLjU3NHExLjYzNyAxLjYzOCAyLjU3NCAzLjgyNVEyNCA5LjUyNSAyNCAxMnQtLjkzOCA0LjY2M3EtLjkzNyAyLjE4Ny0yLjU3NCAzLjgyNXEtMS42MzggMS42MzctMy44MjUgMi41NzRRMTQuNDc1IDI0IDEyIDI0Wm0wLTJxMS44IDAgMy4zNzUtLjU3NVQxOC4yNSAxOS44cS0uODI1LS45MjUtMi40MjUtMS42MTJxLTEuNi0uNjg4LTMuODI1LS42ODh0LTMuODI1LjY4OHEtMS42LjY4Ny0yLjQyNSAxLjYxMnExLjMgMS4wNSAyLjg3NSAxLjYyNVQxMiAyMlptLTcuNy0zLjZxMS4yLTEuMyAzLjIyNS0yLjFxMi4wMjUtLjggNC40NzUtLjhxMi40NSAwIDQuNDYzLjhxMi4wMTIuOCAzLjIxMiAyLjFxMS4xLTEuMzI1IDEuNzEzLTIuOTVRMjIgMTMuODI1IDIyIDEycTAtMi4wNzUtLjc4OC0zLjg4N3EtLjc4Ny0xLjgxMy0yLjE1LTMuMTc1cS0xLjM2Mi0xLjM2My0zLjE3NS0yLjE1MVExNC4wNzUgMiAxMiAycS0yLjA1IDAtMy44NzUuNzg3cS0xLjgyNS43ODgtMy4xODcgMi4xNTFRMy41NzUgNi4zIDIuNzg4IDguMTEzUTIgOS45MjUgMiAxMnEwIDEuODI1LjYgMy40NjNxLjYgMS42MzcgMS43IDIuOTM3WiIvPjwvc3ZnPg=='
+                  alt=''
+                />
+                <span>{name}</span>
+              </p>
+            )}
+            {account && (
+              <p className='accountNumber'>
+                <img
+                  src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTUgMTZ2LTVxMC0uNDI1LjI4OC0uNzEyVDYgMTBxLjQyNSAwIC43MTMuMjg4VDcgMTF2NXEwIC40MjUtLjI4OC43MTNUNiAxN3EtLjQyNSAwLS43MTItLjI4OFQ1IDE2bTYgMHYtNXEwLS40MjUuMjg4LS43MTJUMTIgMTBxLjQyNSAwIC43MTMuMjg4VDEzIDExdjVxMCAuNDI1LS4yODguNzEzVDEyIDE3cS0uNDI1IDAtLjcxMi0uMjg4VDExIDE2bS04IDVxLS40MjUgMC0uNzEyLS4yODhUMiAyMHEwLS40MjUuMjg4LS43MTJUMyAxOWgxOHEuNDI1IDAgLjcxMy4yODhUMjIgMjBxMCAuNDI1LS4yODguNzEzVDIxIDIxem0xNC01di01cTAtLjQyNS4yODgtLjcxMlQxOCAxMHEuNDI1IDAgLjcxMy4yODhUMTkgMTF2NXEwIC40MjUtLjI4OC43MTNUMTggMTdxLS40MjUgMC0uNzEyLS4yODhUMTcgMTZtNC04SDIuOXEtLjM3NSAwLS42MzgtLjI2MlQyIDcuMXYtLjU1cTAtLjI3NS4xMzgtLjQ3NVQyLjUgNS43NWw4LjYtNC4zcS40MjUtLjIuOS0uMnQuOS4ybDguNTUgNC4yNzVxLjI3NS4xMjUuNDEzLjM3NXQuMTM3LjUyNVY3cTAgLjQyNS0uMjg3LjcxM1QyMSA4TTYuNDUgNmgxMS4xem0wIDBoMTEuMUwxMiAzLjI1eiIvPjwvc3ZnPg=='
+                  alt=''
+                />
+
+                <span>{account}</span>
+              </p>
+            )}
+            {amount && (
+              <p className='money'>
+                <img
+                  src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxnIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS13aWR0aD0iMS41Ij48cGF0aCBkPSJNMy4xNzIgMjAuODI4QzQuMzQzIDIyIDYuMjI5IDIyIDEwIDIyaDRjMy43NzEgMCA1LjY1NyAwIDYuODI4LTEuMTcyQzIyIDE5LjY1NyAyMiAxNy43NzEgMjIgMTRjMC0xLjE3IDAtMi4xNTgtLjAzNS0zbS0xLjEzNy0zLjgyOEMxOS42NTcgNiAxNy43NzEgNiAxNCA2aC00QzYuMjI5IDYgNC4zNDMgNiAzLjE3MiA3LjE3MkMyIDguMzQzIDIgMTAuMjI5IDIgMTRjMCAxLjE3IDAgMi4xNTguMDM1IDNNMTIgMmMxLjg4NiAwIDIuODI4IDAgMy40MTQuNTg2QzE2IDMuMTcyIDE2IDQuMTE0IDE2IDZNOC41ODYgMi41ODZDOCAzLjE3MiA4IDQuMTE0IDggNiIvPjxwYXRoIGQ9Ik0xMiAxNy4zMzNjMS4xMDUgMCAyLS43NDYgMi0xLjY2NmMwLS45Mi0uODk1LTEuNjY3LTItMS42NjdzLTItLjc0Ni0yLTEuNjY3YzAtLjkyLjg5NS0xLjY2NiAyLTEuNjY2bTAgNi42NjZjLTEuMTA1IDAtMi0uNzQ2LTItMS42NjZtMiAxLjY2NlYxOG0wLTh2LjY2N20wIDBjMS4xMDUgMCAyIC43NDYgMiAxLjY2NiIvPjwvZz48L3N2Zz4='
+                  alt=''
+                />
+
+                <span> {formatedCurrency.format(amount)}</span>
+              </p>
+            )}
+            {message && (
+              <p className='note'>
+                <img
+                  src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTUuOTUgMTlxLTIuNS0uMTI1LTMuNzI1LTEuMDVUMSAxNS4yNzVxMC0xLjYyNSAxLjMzOC0yLjYzN3QzLjcxMi0xLjIxM3EuOTc1LS4wNzUgMS40NjMtLjMxMlQ4IDEwLjQ1cTAtLjY1LS43MzctLjk3NVQ0LjgyNSA5TDUgN3EyLjU3NS4yIDMuNzg4IDEuMDM4VDEwIDEwLjQ1cTAgMS4zMjUtLjk2MiAyLjA3NXQtMi44MzguOXEtMS42LjEyNS0yLjQuNTg4VDMgMTUuMjc1cTAgLjg3NS43IDEuMjYzVDYuMDUgMTd6bTcuOTI1LS43NUw5Ljc1IDE0LjEyNUwxOC4zNzUgNS41cS41LS41IDEuMTg4LS41dDEuMTg3LjVsMS43NSAxLjc1cS41LjUuNSAxLjE4OHQtLjUgMS4xODd6TTguOTc1IDIwcS0uNDI1LjEtLjc1LS4yMjVUOCAxOS4wMjVsLjc3NS0zLjc3NWwzLjk1IDMuOTV6Ii8+PC9zdmc+'
+                  alt=''
+                />
+
+                <span>{message}</span>
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* {name && <p>{name}</p>}
         {account && <p>STK: {account}</p>}
         {amount && <p>Số tiền: {formatedCurrency.format(amount)}</p>}
-        {message && <p>Lời nhắn: {message}</p>}
+        {message && <p>Lời nhắn: {message}</p>} */}
       </div>
 
       <button onClick={onDownload}>Download</button>

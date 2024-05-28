@@ -2,7 +2,7 @@
 /* eslint-disable multiline-ternary */
 import { useCallback, useEffect, useState } from 'react';
 
-import { toPng } from 'dom-to-images';
+import { drawDOM, exportImage } from '@progress/kendo-drawing';
 import Form, { Field } from 'rc-field-form';
 import Select from 'rc-select';
 import { QRCode } from 'react-qrcode-logo';
@@ -97,11 +97,17 @@ function App() {
   };
 
   const onDownload = useCallback(async () => {
-    const url = await toPng(document.querySelector('#qrCode') as HTMLElement);
-    const link = document.createElement('a');
-    link.download = 'qr-payment.png';
-    link.href = url;
-    link.click();
+    drawDOM(document.querySelector('#qrCode') as HTMLElement, {})
+      .then((g) => exportImage(g))
+      .then((data) => {
+        // base 6pdf download
+        const downloadLink = document.createElement('a');
+        const fileName = 'qrcode.png';
+
+        downloadLink.href = data;
+        downloadLink.download = fileName;
+        downloadLink.click();
+      });
   }, []);
 
   const onCopyLink = async () => {

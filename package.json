@@ -20,6 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qrcode-logo": "^2.9.0",
+    "uncompress-hash": "^0.0.1",
     "vn-qr-pay": "^0.0.5"
   },
   "devDependencies": {

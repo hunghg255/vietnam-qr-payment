@@ -9,7 +9,7 @@ import { QRCode } from 'react-qrcode-logo';
 import { encodeVietQr } from 'vn-qr-pay';
 
 import { BanksOptions, formatedCurrency, normalizeNumber } from '@/utils';
-import { compress, decompress } from '@/utils/lama';
+import { atou, utoa } from 'uncompress-hash';
 
 import './App.css';
 
@@ -29,26 +29,26 @@ function App() {
 
   const bankInfo = BanksOptions?.find((item) => item?.value === bankSelected);
 
+  // Build a shareable URL
   useEffect(() => {
-    const data = window.location.hash.replace('#', '');
-    if (data) {
-      decompress(data, (decompressed: any) => {
-        const d: any = JSON.parse(decompressed);
-        if (d?.allValues) {
-          form.setFields(
-            Object.keys(d?.allValues).map((key) => ({ name: key, value: d?.allValues[key] })),
-          );
-        }
-        if (d?.qrValue) {
-          setQrValue(d?.qrValue);
-        }
-        if (d?.bg) {
-          setBg(d?.bg);
-        }
-        if (d?.logo) {
-          setLogo(d?.logo);
-        }
-      });
+    if (location.hash) {
+      const hash = location.hash.slice(1);
+      const d = JSON.parse(atou(hash)) as any;
+
+      if (d?.allValues) {
+        form.setFields(
+          Object.keys(d?.allValues).map((key) => ({ name: key, value: d?.allValues[key] })),
+        );
+      }
+      if (d?.qrValue) {
+        setQrValue(d?.qrValue);
+      }
+      if (d?.bg) {
+        setBg(d?.bg);
+      }
+      if (d?.logo) {
+        setLogo(d?.logo);
+      }
     }
   }, []);
 
@@ -113,17 +113,21 @@ function App() {
   const onCopyLink = async () => {
     const allValues = form.getFieldsValue();
 
-    compress(
+    const s = utoa(
       JSON.stringify({
         qrValue,
         logo,
         bg,
         allValues,
       }),
-      (compressed: any) => {
-        navigator.clipboard.writeText(`${window.location.origin}/#${compressed}`);
-      },
     );
+
+    const base = `${location.protocol}//${location.host}${location.pathname}`;
+
+    const url = base + '#' + s;
+
+    await navigator.clipboard.writeText(url);
+    alert('Sharable URL has been copied to clipboard.');
   };
 
   return (
